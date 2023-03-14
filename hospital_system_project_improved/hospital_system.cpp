@@ -34,10 +34,9 @@ struct queue_line {
 
   string remove_front() {
     string chosen_patient = patients[0].name;
-
+    len--;
     for (int i = 0; i < len; i++)
       patients[i] = patients[i + 1];
-    len--;
     return chosen_patient;
   };
   void print_queue() {
