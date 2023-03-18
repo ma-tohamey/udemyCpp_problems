@@ -8,7 +8,8 @@ struct patient {
   string name;
   bool is_urgent;
 
-  patient(){};
+  patient() {}
+
   patient(string _name, bool _is_urgent) {
     name = _name;
     is_urgent = _is_urgent;
@@ -20,17 +21,17 @@ struct queue_line {
   int len;
   queue_line() { len = 0; }
 
-  void add_end(patient &reg_patient) {
+  void add_end(patient reg_patient) {
     patients[len] = reg_patient;
     len++;
-  };
+  }
 
-  void add_front(patient &urg_patient) {
+  void add_front(patient urg_patient) {
     for (int i = len; i > 0; i--)
       patients[i] = patients[i - 1];
     patients[0] = urg_patient;
     len++;
-  };
+  }
 
   string remove_front() {
     string chosen_patient = patients[0].name;
@@ -38,17 +39,16 @@ struct queue_line {
     for (int i = 0; i < len; i++)
       patients[i] = patients[i + 1];
     return chosen_patient;
-  };
+  }
   void print_queue() {
     for (int i = 0; i < len; i++) {
-
       string patient_status = "regular";
       if (patients[i].is_urgent)
         patient_status = "urgent";
 
       cout << patients[i].name << " " << patient_status << endl;
     }
-  };
+  }
 };
 
 struct hospital_system {
@@ -94,7 +94,7 @@ struct hospital_system {
     } else {
       cout << "Sorry we can't add more patients for this specialization\n";
     }
-  };
+  }
   void Print_all_patients() {
     for (int i = 0; i < MAX_SPECIALIZATION; i++)
       if (spec_queue[i].len > 0) {
@@ -103,7 +103,7 @@ struct hospital_system {
              << " patients in specialization " << i << endl;
         spec_queue[i].print_queue();
       }
-  };
+  }
   void Get_next_patient() {
     int spec_num;
     cout << "Enter specialization: ";
@@ -115,7 +115,7 @@ struct hospital_system {
     } else {
       cout << "No patients at the moment. Have rest, Dr.\n";
     }
-  };
+  }
 };
 int main(int argc, char *argv[]) {
   hospital_system hospital;
