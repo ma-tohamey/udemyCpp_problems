@@ -105,6 +105,7 @@ struct user {
         is_borrowed = true;
         rearange_user_borrowed_books();
         len--;
+        break;
       }
 
     if (!is_borrowed) {
@@ -187,8 +188,8 @@ struct library_system {
     }
 
     bool user_borrowed_thebook = false;
+
     for (int i = 0; i < total_users; i++) {
-      int user_borrowed_books = users[i].len;
       if (users[i].is_borrowed(book_name)) {
         user_borrowed_thebook = true;
         cout << users[i].name << endl;
