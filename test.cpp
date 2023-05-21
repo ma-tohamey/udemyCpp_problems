@@ -2,12 +2,10 @@
 
 using namespace std;
 
+int main() {
 
-int main()
-{
-
-  string a {"practice"};
-  string b {"perfect"};
+  string a{"practice"};
+  string b{"perfect"};
   cout << (a < b);
   return 0;
   // int a = 0, b = 1;
@@ -23,8 +21,6 @@ int main()
 
   // cout << a << " " << b << endl;
   // return 0;
-
-
 }
 
 // int main()

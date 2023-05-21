@@ -1,0 +1,5 @@
+p_question_id thread_id to_id from_id AQ_status question
+1 0 4 1 1 what is your mother's name
+2 0 4 1 0 what is the weather like today
+3 2 4 1 0 so when are we going to meet today
+4 0 5 1 1 Noha, How old are you?

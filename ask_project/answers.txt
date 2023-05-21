@@ -1,0 +1,4 @@
+answer_id thread_id answer
+1 -1 it's none of your bussiness
+2 -1 it is sunny
+2 3 today at half past 5

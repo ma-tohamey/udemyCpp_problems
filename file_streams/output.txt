@@ -1,0 +1,12 @@
+hello, mahmoud hello, world
+that is my first output file to right
+that is my phone number: 01024599324
+
+  Names  		Ages
+ mahmoud		23
+ mohamed		27
+ abdulrahman		19
+ yasmin		25
+ mom		54
+ dad		62
+ 

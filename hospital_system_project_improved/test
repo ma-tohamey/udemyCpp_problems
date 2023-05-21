@@ -1,0 +1,9 @@
+  void Print_all_patients() {
+    for (int i = 0; i < MAX_SPECIALIZATION; i++)
+      if (spec_queue[i].len > 0) {
+        cout << "******************************************\n";
+        cout << "There are " << spec_queue[i].len
+             << " patients in specialization " << i << endl;
+        spec_queue[i].print_queue();
+      }
+  }

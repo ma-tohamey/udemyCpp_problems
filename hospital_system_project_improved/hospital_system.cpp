@@ -40,6 +40,7 @@ struct queue_line {
       patients[i] = patients[i + 1];
     return chosen_patient;
   }
+
   void print_queue() {
     for (int i = 0; i < len; i++) {
       string patient_status = "regular";
