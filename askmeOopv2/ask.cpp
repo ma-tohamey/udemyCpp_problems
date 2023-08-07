@@ -729,10 +729,10 @@ private:
 
   void AccessSystem() {
     const User &CurrentUser = users_manager.GetCurrentUser();
-    systemMenu.Print(users_manager.GetCurrentUser());
-    int UserChoice = ReadUserChoice(users_manager.GetCurrentUser());
 
     if (CurrentUser.GetUserId() == -1) {
+      systemMenu.Print(CurrentUser);
+      int UserChoice = ReadUserChoice(CurrentUser);
       if (UserChoice == 1)
         users_manager.AttempToLogIn();
       else {
