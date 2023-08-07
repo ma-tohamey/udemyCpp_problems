@@ -261,6 +261,7 @@ class QAManager {
 private:
   std::map<int, QuestionAnswer> QuestionsMAP;
   int LastQuesitonId;
+  // static QAManager QAManagerInstance;
 
   void LoadQuestionsDataBase() {
 
@@ -282,8 +283,11 @@ private:
     WriteFile("questions.txt", RawQuestionAnswerData, false);
   }
 
+  // QAManager() { LoadQuestionsDataBase(); }
+
 public:
   QAManager() { LoadQuestionsDataBase(); }
+  // static QAManager &GetQAManager() { return QAManagerInstance; }
 
   void GetToMeQuestions(std::map<int, std::set<int>> &ToMeQuestionIds,
                         const User &CurrentUser) {
@@ -523,6 +527,8 @@ public:
   }
 };
 
+// QAManager QAManager::QAManagerInstance;
+
 class UsersManager {
 private:
   std::map<std::string, User> Users;
@@ -659,11 +665,10 @@ public:
   void LogOut() { CurrentUser = User(); }
 };
 
-class AskMeSystem {
+class Menu {
 private:
-  UsersManager users_manager;
-  QAManager question_answer_manger;
   std::vector<std::string> UnSignedUserMenu{"LogIn", "Sign Up"};
+
   std::vector<std::string> SignedUserMenu{"Print Questions To Me",
                                           "Print Questions From Me",
                                           "Answer Question",
@@ -672,14 +677,21 @@ private:
                                           "List System Users",
                                           "Feed",
                                           "LogOut"};
-
   int UnSignedUserMenuSize = UnSignedUserMenu.size();
   int SignedUserMenuSize = SignedUserMenu.size();
 
-  void PrintMenu() {
+public:
+  // Getters
+  const int GetMenuSize(const User &CurrentUser) {
+    if (CurrentUser.GetUserId() == -1)
+      return UnSignedUserMenuSize;
+    return SignedUserMenuSize;
+  }
+
+  void Print(const User &CurrentUser) {
     std::cout << "\nMenu:" << std::endl;
 
-    if (users_manager.GetCurrentUser().GetUserId() == -1) {
+    if (CurrentUser.GetUserId() == -1) {
       for (int i = 0; i < UnSignedUserMenuSize; ++i)
         std::cout << '\t' << i + 1 << ": " << UnSignedUserMenu[i] << std::endl;
     }
@@ -690,58 +702,69 @@ private:
     }
     std::cout << std::endl;
   }
+};
 
-  int ReadUserChoice() {
+class AskMeSystem {
+private:
+  UsersManager users_manager;
+  QAManager question_answer_manger;
+  Menu systemMenu;
+
+  int ReadUserChoice(const User &CurrentUser) {
     std::string UserChoice;
     int UserChoiceNumber;
-    int *max;
-
-    if (users_manager.GetCurrentUser().GetUserId() == -1)
-      max = &UnSignedUserMenuSize;
-    else
-      max = &SignedUserMenuSize;
+    int max = systemMenu.GetMenuSize(CurrentUser);
 
     do {
-      std::cout << "Enter a number in the range 1 - " << *max << ": ";
+      std::cout << "Enter a number in the range 1 - " << max << ": ";
       std::cin >> UserChoice;
       UserChoiceNumber = StrToInt(UserChoice);
 
-      if (!(1 <= UserChoiceNumber && UserChoiceNumber <= *max))
+      if (!(1 <= UserChoiceNumber && UserChoiceNumber <= max))
         std::cout << "Error: Invalid number...Try again\n" << std::endl;
-    } while (!(1 <= UserChoiceNumber && UserChoiceNumber <= *max));
+    } while (!(1 <= UserChoiceNumber && UserChoiceNumber <= max));
 
     return UserChoiceNumber;
   }
 
-  void HandleUserChoice() {
-    int UserChoice = ReadUserChoice();
+  void AccessSystem() {
+    const User &CurrentUser = users_manager.GetCurrentUser();
+    systemMenu.Print(users_manager.GetCurrentUser());
+    int UserChoice = ReadUserChoice(users_manager.GetCurrentUser());
 
-    if (users_manager.GetCurrentUser().GetUserId() == -1) {
+    if (CurrentUser.GetUserId() == -1) {
       if (UserChoice == 1)
         users_manager.AttempToLogIn();
-      else if (UserChoice == 2)
+      else {
         users_manager.CreateUserAccount();
+      }
     } else {
-      if (UserChoice == 1)
-        question_answer_manger.PrintToMeQuestions(
-            users_manager.GetCurrentUser());
-      else if (UserChoice == 2)
-        question_answer_manger.PrintFromMeQuestions(
-            users_manager.GetCurrentUser());
-      else if (UserChoice == 3)
-        question_answer_manger.AnswerQuestion(users_manager.GetCurrentUser());
-      else if (UserChoice == 4)
-        question_answer_manger.DeleteQusetion(users_manager.GetCurrentUser());
-      else if (UserChoice == 5)
-        question_answer_manger.AskQuestion(users_manager.GetCurrentUser(),
-                                           users_manager.ReadUserId());
-      else if (UserChoice == 6)
-        users_manager.ListSystemUsers();
-      else if (UserChoice == 7)
-        question_answer_manger.PrintFeed(users_manager.GetCurrentUser());
-      else if (UserChoice == 8)
-        users_manager.LogOut();
+      HandleUserChoice();
     }
+  }
+
+  void HandleUserChoice() {
+    systemMenu.Print(users_manager.GetCurrentUser());
+    int UserChoice = ReadUserChoice(users_manager.GetCurrentUser());
+
+    if (UserChoice == 1)
+      question_answer_manger.PrintToMeQuestions(users_manager.GetCurrentUser());
+    else if (UserChoice == 2)
+      question_answer_manger.PrintFromMeQuestions(
+          users_manager.GetCurrentUser());
+    else if (UserChoice == 3)
+      question_answer_manger.AnswerQuestion(users_manager.GetCurrentUser());
+    else if (UserChoice == 4)
+      question_answer_manger.DeleteQusetion(users_manager.GetCurrentUser());
+    else if (UserChoice == 5)
+      question_answer_manger.AskQuestion(users_manager.GetCurrentUser(),
+                                         users_manager.ReadUserId());
+    else if (UserChoice == 6)
+      users_manager.ListSystemUsers();
+    else if (UserChoice == 7)
+      question_answer_manger.PrintFeed(users_manager.GetCurrentUser());
+    else if (UserChoice == 8)
+      users_manager.LogOut();
   }
 
 public:
@@ -749,8 +772,7 @@ public:
 
   void run() {
     while (true) {
-      PrintMenu();
-      HandleUserChoice();
+      AccessSystem();
     }
   }
 };
