@@ -229,13 +229,6 @@ public:
 ///////////////////////////////////////////////
 ///
 ///////////////////////////////////////////////
-class viewer {
-  // its logic is simple take the given session and printed it out with the
-  // viewer controller whcih it implementation is really simple
-};
-///////////////////////////////////////////////
-///
-///////////////////////////////////////////////
 
 class User {
 private:
@@ -453,26 +446,27 @@ private:
 
 public:
   CustomerUser() { readingSessions = customer.getReadingSessions(); }
+
   void ViewProfile() {
     std::cout << "Name: " << customer.getName() << std::endl;
     std::cout << "Email: " << customer.getEmail() << std::endl;
     std::cout << "User name: " << customer.getUserName() << std::endl;
   }
 
-  void ListSelectFromAvilableBoos() {
-    // not working because it will require more time to make it work with files
-    booksManager.showAvilableBooks();
-    int userChoice = booksManager.readBookNumber();
-    const Book &selectedBook = booksManager.GetChosenBook(userChoice);
-    ReadingSession newReadingSession();
-    viewer(newReadingSession);
-  }
+  // void ListSelectFromAvilableBoos() {
+  //   // not working because it will require more time to make it work with
+  //   files booksManager.showAvilableBooks(); int userChoice =
+  //   booksManager.readBookNumber(); const Book &selectedBook =
+  //   booksManager.GetChosenBook(userChoice); ReadingSession
+  //   newReadingSession();
+  //   // viewer(newReadingSession);
+  // }
 
-  void ListSelectFromReadingSessions() {
-    ListReadingSessions();
-    ReadingSession selectedReadingSession = readChossenSession();
-    viewer(selectedReadingSession);
-  }
+  // void ListSelectFromReadingSessions() {
+  //   ListReadingSessions();
+  //   ReadingSession selectedReadingSession = readChossenSession();
+  //   // viewer(selectedReadingSession);
+  // }
 
   void ListReadingSessions() {
     int sessionsSize = readingSessions.size();
@@ -510,11 +504,11 @@ class UsersManager {
 private:
   // AdminsManager adminsManager;
   // CustomersManager customersManager;
+  User currentUser;
   AdminUser adminUser;
   CustomerUser customerUser;
   std::map<std::string, User> UsersMap;
   Menu *MenuPtr = Menu::Get();
-  User currentUser;
 
   void LoadUsers() {
     std::vector<std::string> RawDataInLines;
@@ -640,11 +634,13 @@ private:
       userChoice = MenuPtr->ReadCustomerChoice();
       if (userChoice == 1)
         customerUser.ViewProfile();
-      else if (userChoice == 2)
-        customerUser.ListSelectFromReadingSessions();
-      else if (userChoice == 3) {
-        customerUser.ListSelectFromReadingSessions();
-      } else
+      // else if (userChoice == 2)
+      // customerUser.ListSelectFromReadingSessions();
+      // else if (userChoice == 3) {
+      // customerUser.ListSelectFromReadingSessions();
+      // }
+      else
+
         usersManager.Logout();
     }
     /////////////////////////////////////////
