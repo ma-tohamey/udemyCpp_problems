@@ -18,7 +18,7 @@ private:
 
 public:
   static ConfigurationManger &Get(string path) {
-    static ConfigurationManger conf_man("");
+    static ConfigurationManger conf_man(path);
     return conf_man;
   }
   void Load() {

@@ -64,6 +64,10 @@ public:
     std::cout << std::endl;
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void printCustomer() {
     int menuSize = customerMenu.size();
     std::cout << "\nMenu:";
@@ -71,6 +75,10 @@ public:
       std::cout << "\n\t" << i + 1 << ": " << customerMenu[i];
     std::cout << std::endl;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void printAdmin() {
     int menuSize = adminMenu.size();
@@ -80,6 +88,10 @@ public:
     std::cout << std::endl;
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void printBookViewer() {
     int menuSize = bookViewerMenu.size();
     std::cout << "\nMenu:";
@@ -87,6 +99,10 @@ public:
       std::cout << "\n\t" << i + 1 << ": " << bookViewerMenu[i];
     std::cout << std::endl;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   const int getDefaultMenuSize() const { return defaultMenu.size(); }
   const int getCustomerMenuSize() const { return customerMenu.size(); }
@@ -150,19 +166,39 @@ public:
     return book->getPages()[currentPage];
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   const Book &getBook() const { return *book; }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void NextPage() {
     if (currentPage < book->getPages().size() - 1)
       ++currentPage;
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void PreviousPage() {
     if (currentPage > 0)
       --currentPage;
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void updateLastAccessDate() { lastAccessInfo = GetCurrentTimeDate(); }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void print() const {
     std::cout << book->getTitle() << " Page: " << currentPage + 1 << "/"
@@ -191,8 +227,17 @@ public:
     defaultBook.setTitle("cpp how to program");
     booksMap[defaultBook.getTitle()] = defaultBook;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   Book *getBook(const std::string &bookName) { return &booksMap[bookName]; }
   int getBooksMapSize() const { return booksMap.size(); }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void addBook() {
     std::string bookInpput;
@@ -239,6 +284,9 @@ public:
     newBook.setPages(bookPagesText);
     booksMap[newBook.getTitle()] = newBook;
   }
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void showAvilableBooks() const {
     std::cout << "\nOur Current book collection: " << std::endl;
@@ -246,6 +294,10 @@ public:
     for (const auto &book : booksMap)
       std::cout << "\t" << i++ << " " << book.first << std::endl;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   const std::string chooseABook() {
     std::cout << "\nwhich book to read?:" << std::endl;
@@ -259,6 +311,10 @@ public:
     }
     return "";
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void sessionViewer(ReadingSession *readingSession) {
     while (true) {
@@ -334,11 +390,19 @@ public:
   AdminManager(User &currentUser, BooksManager &booksManger)
       : currentUser(currentUser), booksManger(booksManger) {}
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void viewProfile() {
     std::cout << "Name: " << currentUser.getName() << std::endl;
     std::cout << "Email: " << currentUser.getEmail() << std::endl;
     std::cout << "User name: " << currentUser.getUserName() << std::endl;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void addBook() { booksManger.addBook(); }
 };
@@ -356,16 +420,28 @@ public:
   CustomerManager(User &currentUser, BooksManager &booksManager)
       : currentUser(currentUser), booksMaanger(booksManager) {}
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   ~CustomerManager() {
     for (auto session : currentUser.getReadingSession())
       delete session;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void viewProfile() {
     std::cout << "Name: " << currentUser.getName() << std::endl;
     std::cout << "Email: " << currentUser.getEmail() << std::endl;
     std::cout << "User name: " << currentUser.getUserName() << std::endl;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void listSelectReadingHistory() {
     if (currentUser.getReadingSession().size() < 1) {
@@ -381,6 +457,10 @@ public:
     int userChoice = getUserInput(i);
     booksMaanger.sessionViewer(currentUser.getReadingSession()[--userChoice]);
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void listSelectAvailableBooks() {
     if (booksMaanger.getBooksMapSize() < 1) {
@@ -431,10 +511,18 @@ public:
     usersMap[customerUser.getUserName()] = customerUser;
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void PrintWelcomeMessage(const User *currentUser) {
     std::cout << "\nHello " << currentUser->getUserName() << " | "
               << (currentUser->getIsAdmin() ? "Admin" : "User") << " View";
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void DoLogin() {
     std::string username, password;
@@ -457,6 +545,10 @@ public:
     *currentUser = usersMap[username];
     PrintWelcomeMessage(currentUser);
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void DoSignUp() {
     std::string userInput;
@@ -488,7 +580,15 @@ public:
     PrintWelcomeMessage(currentUser);
   }
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   bool IsAdmin() const { return currentUser->getIsAdmin(); }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void adminsController(BooksManager *booksManager) {
     AdminManager adminManager(*currentUser, *booksManager);
@@ -506,6 +606,10 @@ public:
       }
     }
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
 
   void customerController(BooksManager *booksManger) {
     CustomerManager customerManager(*currentUser, *booksManger);
@@ -550,10 +654,19 @@ public:
   OnLineBookReaderSystem()
       : usersManager(new UsersManager), booksManager(new BooksManager) {}
 
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   ~OnLineBookReaderSystem() {
     delete usersManager;
     delete booksManager;
   }
+
+  ////////////////////////////////
+  /////////
+  ///////////////////////////////
+
   void run() {
     while (true) {
       accessSystem();
